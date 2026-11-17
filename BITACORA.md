@@ -12,6 +12,9 @@ Registro de **quién hizo qué, cuándo**. Agregar una fila cada vez que termine
 | Fecha y hora | Actividad | Evidencia / commit |
 |---|---|---|
 | 16/11/2026 15:20 | Creación del repositorio, estructura de carpetas y commit inicial con el código provisto | Commit inicial |
+| 17/11/2026 16:23 | Explotación de reconocimiento y BOLA de lectura contra la API vulnerable (E-01 a E-05). Enumeración: `GET /api/pedidos/99` da 404, lo que permite distinguir IDs existentes | E-01 a E-05, E-04b (rama `explotacion`) |
+| 17/11/2026 16:23 | `mvn test` sobre la versión segura original: no compila (falta import de `Pedido` en `PedidoController`) | T-01 |
+| 17/11/2026 16:23 | Corrección A: agregar import faltante en `PedidoController`. Compila falla 1 de 9 pruebas (`rolAdminEnJson_seIgnoraYSeAlmacenaUSER`) | T-02 |
 
 <!-- Fin de la sección de corrección. Agregar filas ARRIBA de esta línea. -->
 
