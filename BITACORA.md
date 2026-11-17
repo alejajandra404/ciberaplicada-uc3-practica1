@@ -15,6 +15,8 @@ Registro de **quién hizo qué, cuándo**. Agregar una fila cada vez que termine
 | 17/11/2026 16:23 | Explotación de reconocimiento y BOLA de lectura contra la API vulnerable (E-01 a E-05). Enumeración: `GET /api/pedidos/99` da 404, lo que permite distinguir IDs existentes | E-01 a E-05, E-04b (rama `explotacion`) |
 | 17/11/2026 16:23 | `mvn test` sobre la versión segura original: no compila (falta import de `Pedido` en `PedidoController`) | T-01 |
 | 17/11/2026 16:23 | Corrección A: agregar import faltante en `PedidoController`. Compila falla 1 de 9 pruebas (`rolAdminEnJson_seIgnoraYSeAlmacenaUSER`) | T-02 |
+| 17/11/2026 16:28 | Corrección B: `@JsonIgnoreProperties({"id","rol"})` en `UsuarioRegistroDTO`. Aparecen 2 fallos ocultos: registro de usuario responde 500 (contador IDENTITY de H2) y mensaje de validación de `nombre` no determinista | T-03 |
+| 17/11/2026 16:33 | Corrección D: reinicio del contador IDENTITY en `data.sql`. Corrección E: prioridad del mensaje `@NotBlank` en `GlobalExceptionHandler`. 9 de 9 pruebas pasan | T-04 |
 
 <!-- Fin de la sección de corrección. Agregar filas ARRIBA de esta línea. -->
 

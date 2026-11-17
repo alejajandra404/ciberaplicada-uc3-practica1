@@ -22,13 +22,25 @@ public class GlobalExceptionHandler {
 
     /**
      * Errores de validacion de DTOs (@Valid): 400 con un mensaje por campo.
+     *
+     * CORRECCION E: un mismo campo puede violar varias reglas a la vez (p. ej.
+     * nombre "" viola @NotBlank y @Size). Bean Validation no garantiza el orden
+     * de las violaciones, por lo que antes el mensaje devuelto era aleatorio.
+     * Ahora el mensaje de campo obligatorio (@NotBlank/@NotNull) tiene
+     * prioridad y, para el resto, se conserva el primero.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> manejarValidacion(MethodArgumentNotValidException ex) {
         Map<String, String> errores = new LinkedHashMap<>();
-        ex.getBindingResult().getFieldErrors()
-                .forEach(error -> errores.put(error.getField(), error.getDefaultMessage()));
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            boolean esObligatorio = "NotBlank".equals(error.getCode()) || "NotNull".equals(error.getCode());
+            if (esObligatorio) {
+                errores.put(error.getField(), error.getDefaultMessage());
+            } else {
+                errores.putIfAbsent(error.getField(), error.getDefaultMessage());
+            }
+        });
         return errores;
     }
 
