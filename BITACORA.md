@@ -17,6 +17,7 @@ Registro de **quién hizo qué, cuándo**. Agregar una fila cada vez que termine
 | 17/11/2026 16:23 | Corrección A: agregar import faltante en `PedidoController`. Compila falla 1 de 9 pruebas (`rolAdminEnJson_seIgnoraYSeAlmacenaUSER`) | T-02 |
 | 17/11/2026 16:28 | Corrección B: `@JsonIgnoreProperties({"id","rol"})` en `UsuarioRegistroDTO`. Aparecen 2 fallos ocultos: registro de usuario responde 500 (contador IDENTITY de H2) y mensaje de validación de `nombre` no determinista | T-03 |
 | 17/11/2026 16:33 | Corrección D: reinicio del contador IDENTITY en `data.sql`. Corrección E: prioridad del mensaje `@NotBlank` en `GlobalExceptionHandler`. 9 de 9 pruebas pasan | T-04 |
+| 17/11/2026 16:58 | Corrección C: `GET /api/usuarios` exige `X-User-Id` y devuelve solo al usuario autenticado (+2 pruebas nuevas en `PruebaBolaTest`). Corrección F: consola H2 desactivada. 11 de 11 pruebas pasan | T-05 |
 
 <!-- Fin de la sección de corrección. Agregar filas ARRIBA de esta línea. -->
 
