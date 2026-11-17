@@ -1,0 +1,28 @@
+# Compilación Maven 
+target/
+*.class
+*.jar
+*.war
+
+# Archivos generados por extensiones del IDE 
+.github/modernize/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+nbproject/private/
+nb-configuration.xml
+nbactions.xml
+
+# Sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Archivos temporales de Word mientras un .docx está abierto
+~$*.docx
+~$*.doc
+
+# Logs
+*.log
