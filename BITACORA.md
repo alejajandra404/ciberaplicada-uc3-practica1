@@ -29,6 +29,22 @@ Registro de **quién hizo qué, cuándo**. Agregar una fila cada vez que termine
 
 | Fecha y hora | Actividad | Evidencia / commit |
 |---|---|---|
+| 18/11/2026 17:32 | Ataques E-06 a E-11 contra la API vulnerable; E-06 a E-11 devuelven 200/201 tras reiniciar en memoria los contadores IDENTITY de H2 (sin cambiar el código fuente). El primer E-06 con `data.sql` original devolvió 500 por ID duplicado. | [Resultados E-06 a E-11](evidencias/01-explotacion/RESULTADOS_E-06_a_E-11.md) |
+
+### Resultados reales de explotación
+
+| ID | Código obtenido | Observación |
+|---|---|---|
+| E-06 | 200 | Pedido creado a nombre de Beto aunque se envió `X-User-Id: 1`; intento inicial con el contador H2 original: 500 por ID duplicado. |
+| E-07 | 200 | Se aceptaron descripción vacía y monto `-500`. |
+| E-08 | 201 | Eva se creó con `rol: ADMIN`; respuesta expone su contraseña. |
+| E-08b | 201 | Se envió `id: 999`, pero se guardó con ID 4; el servidor asignó otro identificador. |
+| E-09 | 200 | Eva aparece como ADMIN en `/api/usuarios/3`, con contraseña visible. |
+| E-09b | 200 | El listado muestra Ana, Beto, Eva (ADMIN) y Mallory (ADMIN), con contraseñas visibles. |
+| E-10 | 201 | Se aceptaron nombre vacío, email inválido y contraseña de 3 caracteres. |
+| E-11 | 201 | Se aceptó el cuerpo con campos desconocidos; `esAdministrador` y `saldo` no aparecen en la respuesta. |
+
+> La sesión de Postman estaba expirada y no permitió tomar nuevas capturas desde la aplicación. Los resultados detallados de las respuestas HTTP ejecutadas localmente están en `evidencias/01-explotacion/RESULTADOS_E-06_a_E-11.md`; las capturas Postman quedan pendientes de renovar la sesión.
 
 <!-- Fin de la sección de explotación. Agregar filas ARRIBA de esta línea. -->
 

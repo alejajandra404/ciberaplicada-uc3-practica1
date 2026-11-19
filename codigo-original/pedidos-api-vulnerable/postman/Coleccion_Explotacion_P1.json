@@ -87,6 +87,23 @@
       }
     },
     {
+      "name": "04b - Validacion: monto negativo y descripcion vacia",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-User-Id", "value": "1" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"descripcion\": \"\",\n  \"monto\": -500,\n  \"fecha\": \"2026-11-11\",\n  \"usuario\": { \"id\": 1 }\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/api/pedidos",
+        "description": "E-07. Comprueba si se aceptan una descripcion vacia y un monto negativo."
+      }
+    },
+    {
       "name": "05 - Mass Assignment: autorregistrarce como ADMIN",
       "request": {
         "method": "POST",
@@ -110,11 +127,67 @@
       }
     },
     {
+      "name": "05b - Mass Assignment: intentar forzar el id",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 999,\n  \"nombre\": \"Mallory Atacante\",\n  \"email\": \"mallory@atacante.mx\",\n  \"password\": \"clave12345\",\n  \"rol\": \"ADMIN\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/api/usuarios",
+        "description": "E-08b. Anota si el id enviado se conserva, se reemplaza o provoca un error."
+      }
+    },
+    {
       "name": "06 - Verificar rol ADMIN obtenido",
       "request": {
         "method": "GET",
         "url": "{{baseUrl}}/api/usuarios/3",
         "description": "Confirmacion del ataque anterior: el usuario creado (id 3, Eva) aparece con rol ADMIN y contrasena visible. Resultado esperado: 200."
+      }
+    },
+    {
+      "name": "06b - Listar usuarios para verificar ADMIN",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/usuarios",
+        "description": "E-09b. Lista los usuarios y roles tras crear a Eva y Mallory."
+      }
+    },
+    {
+      "name": "05c - Validacion: nombre, email y password invalidos",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"\",\n  \"email\": \"esto-no-es-un-correo\",\n  \"password\": \"123\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/api/usuarios",
+        "description": "E-10. Comprueba si se aceptan un nombre vacio, email invalido y password corto."
+      }
+    },
+    {
+      "name": "05d - Esquema: campo desconocido",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Campo Extra\",\n  \"email\": \"extra@prueba.mx\",\n  \"password\": \"clave12345\",\n  \"esAdministrador\": true,\n  \"saldo\": 1000000\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/api/usuarios",
+        "description": "E-11. Comprueba si la API acepta e ignora campos que no existen en el modelo."
       }
     }
   ]
