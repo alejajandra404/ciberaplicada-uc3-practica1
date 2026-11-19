@@ -1,5 +1,6 @@
 package com.itson.ciberseguridad.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -10,7 +11,13 @@ import jakarta.validation.constraints.Size;
  * ✅ SEGURO: no incluye los campos "id" ni "rol", de modo que un cliente no
  * puede asignarse identificadores ni privilegios (mitiga Mass Assignment,
  * API3:2023). Los campos se validan con Bean Validation (@Valid).
+ *
+ * CORRECCION B: con fail-on-unknown-properties=true, enviar "rol" o "id"
+ * provocaba 400 en lugar de ignorarlos (la prueba de Mass Assignment espera
+ * 201 con rol USER). @JsonIgnoreProperties descarta solo esos
+ * dos campos sensibles, cualquier otro campo desconocido sigue rechazandose con 400.
  */
+@JsonIgnoreProperties({"id", "rol"})
 public class UsuarioRegistroDTO {
 
     @NotBlank(message = "El nombre es obligatorio")
