@@ -58,4 +58,25 @@ class PruebaBolaTest {
         mockMvc.perform(get("/api/usuarios/2").header("X-User-Id", "1"))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    void listarUsuarios_sinEncabezado_retorna401() throws Exception {
+        // CORRECCION C: el listado de usuarios ya no es publico, sin identidad
+        // no se pueden enumerar cuentas ni correos.
+        mockMvc.perform(get("/api/usuarios"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").exists());
+    }
+
+    @Test
+    void listarUsuarios_devuelveSoloElUsuarioAutenticado() throws Exception {
+        // CORRECCION C: Ana (usuario 1) solo recibe su propia informacion, nunca
+        // la de Beto ni la de otros usuarios registrados.
+        mockMvc.perform(get("/api/usuarios").header("X-User-Id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].email").value("ana@itson.mx"))
+                .andExpect(jsonPath("$[0].password").doesNotExist());
+    }
 }

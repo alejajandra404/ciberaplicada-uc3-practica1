@@ -38,13 +38,18 @@ public class UsuarioController {
     /**
      * GET /api/usuarios
      * ✅ SEGURO: salida mediante UsuarioRespuestaDTO (sin contrasena).
+     *
+     * CORRECCION C: antes este endpoint no exigia X-User-Id y devolvia a TODOS
+     * los usuarios (id, nombre, email y rol), lo que permitia enumerar cuentas,
+     * recolectar correos e identificar a los ADMIN (API1:2023 / API3:2023).
+     * Ahora exige usuario autenticado (401 si falta) y aplica el mismo control
+     * que GET /api/pedidos, solo devuelve la informacion del propio usuario.
      */
     @GetMapping
-    public ResponseEntity<List<UsuarioRespuestaDTO>> listar() {
-        List<UsuarioRespuestaDTO> usuarios = usuarioRepository.findAll().stream()
-                .map(this::aRespuestaDTO)
-                .toList();
-        return ResponseEntity.ok(usuarios);
+    public ResponseEntity<List<UsuarioRespuestaDTO>> listar(
+            @RequestHeader(value = "X-User-Id", required = false) String encabezadoXUserId) {
+        Usuario usuario = usuarioAutenticadoService.obtenerUsuarioAutenticado(encabezadoXUserId);
+        return ResponseEntity.ok(List.of(aRespuestaDTO(usuario)));
     }
 
     /**
